@@ -1,0 +1,48 @@
+{
+  "entries": [
+    {
+      "id": 1,
+      "project": "Smoke Weed",
+      "start_time": "2026-03-17T20:21:05.633433353+01:00",
+      "end_time": "2026-03-17T20:21:09.470588368+01:00",
+      "description": "Smoke da weed"
+    },
+    {
+      "id": 2,
+      "project": "Smoke Weed",
+      "start_time": "2026-03-17T20:21:18.048043095+01:00",
+      "end_time": "2026-03-17T20:21:18.378428636+01:00",
+      "description": "everyday"
+    },
+    {
+      "id": 3,
+      "project": "Smoke Weed",
+      "start_time": "2026-03-17T20:21:24.911073557+01:00",
+      "end_time": "2026-03-17T20:21:27.445876171+01:00",
+      "description": "Dont smoke da seeds"
+    },
+    {
+      "id": 4,
+      "project": "Smoke Weed",
+      "start_time": "2026-03-17T20:21:35.251654898+01:00",
+      "end_time": "2026-03-17T20:21:35.738211441+01:00",
+      "description": "no way!"
+    },
+    {
+      "id": 5,
+      "project": "Test",
+      "start_time": "2026-03-19T19:05:00+01:00",
+      "end_time": "2026-03-19T20:00:00+01:00",
+      "description": "Testing app"
+    },
+    {
+      "id": 6,
+      "project": "Test",
+      "start_time": "2026-04-09T21:30:56.286592464+02:00",
+      "end_time": "2026-04-09T21:30:56.985609075+02:00",
+      "description": "Test"
+    }
+  ],
+  "next_id": 7
+}
+
