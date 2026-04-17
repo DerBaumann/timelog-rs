@@ -1,7 +1,7 @@
-use chrono::{DateTime, Datelike, Local, Timelike};
+use chrono::{DateTime, Datelike, Timelike, Utc};
 use std::fmt::Display;
 
-pub fn display_time(value: &DateTime<Local>) -> impl Display {
+pub fn display_time(value: &DateTime<Utc>) -> impl Display {
     format!(
         "{:02}.{:02}.{:04} {:02}:{:02}",
         value.day(),

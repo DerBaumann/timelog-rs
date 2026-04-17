@@ -1,4 +1,4 @@
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Utc};
 use cli_table::Table;
 use serde::{Deserialize, Serialize};
 
@@ -10,9 +10,9 @@ pub struct Entry {
     #[table(title = "Projekt")]
     pub project: String,
     #[table(title = "Startzeit", display_fn = "display_time")]
-    pub start_time: DateTime<Local>,
+    pub start_time: DateTime<Utc>,
     #[table(title = "Endzeit", display_fn = "display_time")]
-    pub end_time: DateTime<Local>,
+    pub end_time: DateTime<Utc>,
     #[table(title = "Beschreibung")]
     pub description: String,
 }
@@ -20,8 +20,8 @@ pub struct Entry {
 impl Entry {
     pub fn new(
         project: String,
-        start_time: DateTime<Local>,
-        end_time: DateTime<Local>,
+        start_time: DateTime<Utc>,
+        end_time: DateTime<Utc>,
         description: String,
     ) -> Self {
         Entry {
