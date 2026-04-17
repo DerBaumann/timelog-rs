@@ -1,10 +1,7 @@
-use crate::{
-    core::{
-        repository::{Repository, RepositoryError},
-        store::json_store::JsonStore,
-    },
-    entry::models::Entry,
-};
+use crate::JsonStore;
+use crate::Repository;
+use crate::RepositoryError;
+use crate::entry::models::Entry;
 
 pub struct JsonRepository {
     pub file_path: String,

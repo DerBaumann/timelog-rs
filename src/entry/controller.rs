@@ -1,4 +1,4 @@
-use crate::{core::repository::Repository, entry::models::Entry};
+use crate::{Repository, entry::models::Entry};
 use askama::Template;
 use chrono::{DateTime, Local, NaiveDate, NaiveDateTime, TimeZone, Timelike};
 use cli_table::{WithTitle, print_stdout};
