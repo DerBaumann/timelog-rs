@@ -1,10 +1,12 @@
+use std::path::PathBuf;
+
 use crate::JsonStore;
 use crate::Repository;
 use crate::RepositoryError;
 use crate::entry::models::Entry;
 
 pub struct JsonRepository {
-    pub file_path: String,
+    pub file_path: PathBuf,
 }
 
 impl Repository<Entry> for JsonRepository {

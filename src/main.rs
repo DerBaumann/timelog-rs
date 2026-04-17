@@ -4,7 +4,7 @@ use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::JsonRepository};
 
 // TODO: Compatability with old file format
-// TODO: Better terminal forms with inquire crate
+// TODO: Make everything use UTC to make everything cleaner
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -58,11 +58,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             file_path: env::var_os("TIMELOG_STOREPATH")
                 .map(PathBuf::from)
                 .or_else(|| dirs::config_local_dir().map(|p| p.join("store.json")))
-                .ok_or("TIMELOG_STOREPATH and user config dirs are both not defined!")?
-                .to_str() // TODO: Make store use PathBuf instead of String
-                .unwrap()
-                .to_string(), // .into_string()
-                              // .expect("store path should represent valid unicode"),
+                .ok_or("TIMELOG_STOREPATH and user config dirs are both not defined!")?,
         }),
     };
 

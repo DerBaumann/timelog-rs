@@ -2,7 +2,7 @@ pub mod entry;
 
 use crate::entry::models::Entry;
 use serde::{Deserialize, Serialize};
-use std::{fs, io};
+use std::{fs, io, path::Path};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -20,7 +20,7 @@ pub struct JsonStore {
 }
 
 impl JsonStore {
-    pub fn read(file_path: &str) -> Result<JsonStore, JsonStoreError> {
+    pub fn read(file_path: &Path) -> Result<JsonStore, JsonStoreError> {
         let contents = fs::read_to_string(file_path).or_else(|e| match e.kind() {
             io::ErrorKind::NotFound => {
                 let empty = JsonStore {
@@ -37,7 +37,7 @@ impl JsonStore {
         Ok(store)
     }
 
-    pub fn write(file_path: &str, store: Self) -> Result<JsonStore, JsonStoreError> {
+    pub fn write(file_path: &Path, store: Self) -> Result<JsonStore, JsonStoreError> {
         let contents = serde_json::to_string(&store)?;
         fs::write(file_path, contents)?;
         Ok(store)
