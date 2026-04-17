@@ -4,7 +4,6 @@ use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::JsonRepository};
 
 // TODO: Compatability with old file format
-// TODO: Make everything use UTC to make everything cleaner
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
