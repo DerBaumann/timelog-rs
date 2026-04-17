@@ -52,7 +52,6 @@ enum Commands {
 fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
 
-    // TODO: Add file name to default store path
     let entry_controller = EntryController {
         entry_repository: Box::new(JsonRepository {
             file_path: env::var_os("TIMELOG_STOREPATH")
