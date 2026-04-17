@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::path::PathBuf;
 
 use thiserror::Error;
@@ -22,6 +23,26 @@ impl EntryRepository {
     pub fn fetch_all(&self) -> Result<Vec<Entry>, RepositoryError> {
         let store = JsonStore::read(&self.file_path)?;
         Ok(store.entries)
+    }
+
+    pub fn fetch_one(&self, id: u32) -> Result<Entry, RepositoryError> {
+        JsonStore::read(&self.file_path)?
+            .entries
+            .into_iter()
+            .find(|e| e.id == id)
+            .ok_or(RepositoryError::NotFound)
+    }
+
+    pub fn fetch_projects(&self) -> Result<Vec<String>, RepositoryError> {
+        let projects = JsonStore::read(&self.file_path)?
+            .entries
+            .into_iter()
+            .map(|e| e.project)
+            .collect::<HashSet<_>>()
+            .into_iter()
+            .collect();
+
+        Ok(projects)
     }
 
     pub fn create(&self, mut entity: Entry) -> Result<Entry, RepositoryError> {
@@ -58,13 +79,5 @@ impl EntryRepository {
         store.entries.retain(|e| e.id != id);
         JsonStore::write(&self.file_path, store)?;
         Ok(())
-    }
-
-    pub fn fetch_one(&self, id: u32) -> Result<Entry, RepositoryError> {
-        JsonStore::read(&self.file_path)?
-            .entries
-            .into_iter()
-            .find(|e| e.id == id)
-            .ok_or(RepositoryError::NotFound)
     }
 }

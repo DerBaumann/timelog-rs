@@ -3,7 +3,7 @@ use askama::Template;
 use chrono::{NaiveDate, NaiveDateTime, TimeZone, Timelike, Utc};
 use cli_table::{WithTitle, print_stdout};
 use crossterm::event::read;
-use inquire::Text;
+use inquire::{Select, Text};
 use std::{collections::BTreeMap, error::Error, fs};
 
 #[derive(Template)]
@@ -20,8 +20,18 @@ impl EntryController {
     pub fn record(&self, project: Option<String>) -> Result<(), Box<dyn Error>> {
         let project = match project {
             Some(p) => p,
-            // TODO: Change this to select from all existing projects or add new
-            None => Text::new("What project are you working on?").prompt()?,
+            None => {
+                let mut options = self.entry_repository.fetch_projects()?;
+                options.push("Create new!".to_string());
+
+                let p = Select::new("What project are you working on?", options).prompt()?;
+
+                if p == "Create new!" {
+                    Text::new("Project name:").prompt()?
+                } else {
+                    p
+                }
+            }
         };
 
         let start_time = Utc::now();
