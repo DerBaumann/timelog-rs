@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use clap::{Parser, Subcommand};
 use std::{env, error::Error, path::PathBuf};
-use timelog::entry::{controller::EntryController, repository::JsonRepository};
+use timelog::entry::{controller::EntryController, repository::EntryRepository};
 
 // TODO: Compatability with old file format
 
@@ -52,12 +52,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
 
     let entry_controller = EntryController {
-        entry_repository: Box::new(JsonRepository {
+        entry_repository: EntryRepository {
             file_path: env::var_os("TIMELOG_STOREPATH")
                 .map(PathBuf::from)
                 .or_else(|| dirs::config_local_dir().map(|p| p.join("store.json")))
                 .ok_or("TIMELOG_STOREPATH and user config dirs are both not defined!")?,
-        }),
+        },
     };
 
     match cli.command {

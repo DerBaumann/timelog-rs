@@ -1,4 +1,4 @@
-use crate::{Repository, entry::models::Entry};
+use crate::entry::{models::Entry, repository::EntryRepository};
 use askama::Template;
 use chrono::{NaiveDate, NaiveDateTime, TimeZone, Timelike, Utc};
 use cli_table::{WithTitle, print_stdout};
@@ -13,7 +13,7 @@ struct ExportTemplate {
 }
 
 pub struct EntryController {
-    pub entry_repository: Box<dyn Repository<Entry>>,
+    pub entry_repository: EntryRepository,
 }
 
 impl EntryController {
