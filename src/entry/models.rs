@@ -1,8 +1,12 @@
-use chrono::{DateTime, Utc};
+use std::fmt::Display;
+
+use chrono::{DateTime, Local, Utc};
 use cli_table::Table;
 use serde::{Deserialize, Serialize};
 
-use crate::entry::utils::display_time;
+fn display_time(value: &DateTime<Utc>) -> impl Display {
+    value.with_timezone(&Local).format("%d.%m.%Y - %H:%M")
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, Table)]
 pub struct Entry {

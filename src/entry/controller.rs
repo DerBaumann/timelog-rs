@@ -1,7 +1,7 @@
-use crate::entry::{models::Entry, repository::EntryRepository};
+use crate::entry::{models::Entry, naive_to_utc, repository::EntryRepository};
 use askama::Template;
-use chrono::{NaiveDate, NaiveDateTime, TimeZone, Timelike, Utc};
-use cli_table::{WithTitle, print_stdout};
+use chrono::{Local, NaiveDate, NaiveDateTime, Utc};
+use cli_table::WithTitle;
 use crossterm::event::read;
 use inquire::{Select, Text};
 use std::{collections::BTreeMap, error::Error, fs};
@@ -35,9 +35,9 @@ impl EntryController {
         };
 
         let start_time = Utc::now();
-        let start_time_str = format!("{:02}:{:02}", start_time.hour(), start_time.minute());
+        let local_start = start_time.with_timezone(&Local);
 
-        println!("Started working at: {}", start_time_str);
+        println!("Started working at: {}", local_start.format("%H:%M"));
         println!("Press enter to stop tracking");
 
         read()?;
@@ -55,7 +55,8 @@ impl EntryController {
         let entries = self.entry_repository.fetch_all()?;
         let grouped: BTreeMap<NaiveDate, Vec<Entry>> =
             entries.into_iter().fold(BTreeMap::new(), |mut acc, e| {
-                acc.entry(e.start_time.date_naive()).or_default().push(e);
+                let local = e.start_time.with_timezone(&Local);
+                acc.entry(local.date_naive()).or_default().push(e);
                 acc
             });
 
@@ -70,7 +71,7 @@ impl EntryController {
 
     pub fn list(&self) -> Result<(), Box<dyn Error>> {
         let entries = self.entry_repository.fetch_all()?;
-        print_stdout(entries.with_title())?;
+        cli_table::print_stdout(entries.with_title())?;
         Ok(())
     }
 
@@ -82,8 +83,8 @@ impl EntryController {
         end_time: Option<NaiveDateTime>,
         description: Option<String>,
     ) -> Result<(), Box<dyn Error>> {
-        let start_time = start_time.map(|t| Utc.from_utc_datetime(&t));
-        let end_time = end_time.map(|t| Utc.from_utc_datetime(&t));
+        let start_time = start_time.map(naive_to_utc).transpose()?;
+        let end_time = end_time.map(naive_to_utc).transpose()?;
 
         let mut entry = self.entry_repository.fetch_one(id)?;
 
@@ -105,8 +106,8 @@ impl EntryController {
         end_time: NaiveDateTime,
         description: String,
     ) -> Result<(), Box<dyn Error>> {
-        let start_time = Utc.from_utc_datetime(&start_time);
-        let end_time = Utc.from_utc_datetime(&end_time);
+        let start_time = naive_to_utc(start_time)?;
+        let end_time = naive_to_utc(end_time)?;
 
         let entry = Entry::new(project, start_time, end_time, description);
         self.entry_repository.create(entry)?;
