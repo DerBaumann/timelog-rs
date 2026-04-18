@@ -15,6 +15,7 @@ pub enum JsonStoreError {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JsonStore {
+    pub version: u32,
     pub entries: Vec<Entry>,
     pub next_id: u32,
 }
@@ -24,6 +25,7 @@ impl JsonStore {
         let contents = fs::read_to_string(file_path).or_else(|e| match e.kind() {
             io::ErrorKind::NotFound => {
                 let empty = JsonStore {
+                    version: 2,
                     entries: vec![],
                     next_id: 1,
                 };
