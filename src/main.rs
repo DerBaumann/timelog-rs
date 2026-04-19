@@ -3,7 +3,6 @@ use clap::{Parser, Subcommand};
 use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::EntryRepository};
 
-// TODO: Compatability with old file format
 // TODO: Justfile for fun and profits
 
 #[derive(Parser)]

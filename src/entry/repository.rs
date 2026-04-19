@@ -1,11 +1,9 @@
-use std::collections::HashSet;
-use std::path::PathBuf;
-
-use thiserror::Error;
-
 use crate::JsonStore;
 use crate::JsonStoreError;
 use crate::entry::models::Entry;
+use std::collections::HashSet;
+use std::path::PathBuf;
+use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum RepositoryError {
@@ -15,6 +13,7 @@ pub enum RepositoryError {
     JsonStoreError(#[from] JsonStoreError),
 }
 
+// TODO: replace file_path with store object
 pub struct EntryRepository {
     pub file_path: PathBuf,
 }
