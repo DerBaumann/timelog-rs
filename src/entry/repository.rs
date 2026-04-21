@@ -49,7 +49,7 @@ impl EntryRepository {
         entity.id = store.next_id;
         store.next_id += 1;
         store.entries.push(entity.clone());
-        JsonStore::write(&self.file_path, store)?;
+        store.write(&self.file_path)?;
         Ok(entity)
     }
 
@@ -65,7 +65,7 @@ impl EntryRepository {
             }
         }
 
-        JsonStore::write(&self.file_path, store)?;
+        store.write(&self.file_path)?;
         if found {
             Ok(entity)
         } else {
@@ -76,7 +76,7 @@ impl EntryRepository {
     pub fn delete(&self, id: u32) -> Result<(), RepositoryError> {
         let mut store = JsonStore::read(&self.file_path)?;
         store.entries.retain(|e| e.id != id);
-        JsonStore::write(&self.file_path, store)?;
+        store.write(&self.file_path)?;
         Ok(())
     }
 }

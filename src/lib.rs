@@ -73,6 +73,7 @@ impl JsonStore {
 
         match version {
             1 => {
+                // TODO: Move this to own function
                 println!("Store version 1 detected. Running migration...");
 
                 fs::copy(file_path, file_path.with_extension("json.bak"))?;
@@ -130,7 +131,7 @@ impl JsonStore {
 
                 println!("Saving store...");
                 // TODO: Remove clone
-                JsonStore::write(file_path, store.clone())?;
+                store.write(file_path)?;
                 Ok(store)
             }
             2 => Ok(serde_json::from_str(&contents)?),
@@ -138,10 +139,9 @@ impl JsonStore {
         }
     }
 
-    // TODO: Make this a method on &self
-    pub fn write(file_path: &Path, store: Self) -> Result<JsonStore, JsonStoreError> {
-        let contents = serde_json::to_string(&store)?;
+    pub fn write(&self, file_path: &Path) -> Result<(), JsonStoreError> {
+        let contents = serde_json::to_string(self)?;
         fs::write(file_path, contents)?;
-        Ok(store)
+        Ok(())
     }
 }
