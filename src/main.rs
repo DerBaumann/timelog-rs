@@ -3,8 +3,6 @@ use clap::{Parser, Subcommand};
 use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::EntryRepository};
 
-// TODO: Justfile for fun and profits
-
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Cli {
