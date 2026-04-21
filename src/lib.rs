@@ -16,8 +16,8 @@ pub enum JsonStoreError {
     InvalidVersion,
 }
 
-// TODO: Remove Clone
-#[derive(Debug, Serialize, Deserialize, Clone)]
+// TODO: Attach path to store
+#[derive(Debug, Serialize, Deserialize)]
 pub struct JsonStore {
     // #[serde(skip)]
     // pub file_path: PathBuf,
@@ -41,7 +41,7 @@ impl JsonStore {
                     next_id: 1,
                 };
                 let json = serde_json::to_string(&empty)?;
-                fs::write(file_path, json.clone())?;
+                fs::write(file_path, &json)?;
                 Ok(json)
             }
             _ => Err(e),

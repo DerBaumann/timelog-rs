@@ -83,7 +83,6 @@ pub fn v1_to_v2(file_path: &Path, contents: &str) -> Result<JsonStore, JsonStore
     };
 
     println!("Saving store...");
-    // TODO: Remove clone
     store.write(file_path)?;
     Ok(store)
 }
