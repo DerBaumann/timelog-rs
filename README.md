@@ -17,4 +17,17 @@ Timelog is primarily a small time-tracking tool, that you can use to track:
 - How long you spent on chores
 - working time, for when your boss forces you to have a work-journal.
 
-TODO
+You can:
+
+- `list` all entries
+- Either `record` a new entry or programatically `add` one
+- `edit` and `delete` entries by id
+- `export` the entries to a markdown doc (currently a predefined german version. Might change it to a more general template or add the feature to add your own ones)
+- Show useful auto-generated help text for any command with the `--help` flag (thx clap)
+
+## Configuration
+
+If you want your store to be somewhere, other that your default config path,
+you can manually override the `TIMELOG_STOREPATH` environment variable.
+
+Outside of that there isn't much in terms of configuration that you can do.
