@@ -41,9 +41,8 @@ pub fn v1_to_v2(file_path: &Path, contents: &str) -> Result<JsonStore, JsonStore
     let entries = store_v1
         .entries
         .iter()
-        .map(|e| {
-            // TODO: Remove unwrap
-            let date = NaiveDate::parse_from_str(&e.date, "%Y-%m-%d").unwrap();
+        .map(|e| -> Result<_, JsonStoreError> {
+            let date = NaiveDate::parse_from_str(&e.date, "%Y-%m-%d")?;
             let start_time = date.and_hms_opt(0, 0, 0).expect("00:00:00 is a valid time")
                 + chrono::Duration::minutes(e.start_time.into());
             let end_time = date.and_hms_opt(0, 0, 0).expect("00:00:00 is a valid time")
@@ -51,7 +50,7 @@ pub fn v1_to_v2(file_path: &Path, contents: &str) -> Result<JsonStore, JsonStore
 
             let id = next_id;
             next_id += 1;
-            Entry {
+            Ok(Entry {
                 id,
                 project: store_v1
                     .projects
@@ -59,22 +58,20 @@ pub fn v1_to_v2(file_path: &Path, contents: &str) -> Result<JsonStore, JsonStore
                     .find(|p| p.id == e.project_id)
                     .map(|p| p.name.clone())
                     .unwrap_or("unknown".to_string()),
-                // TODO: Remove unwrap
                 start_time: Local
                     .from_local_datetime(&start_time)
                     .single()
-                    .unwrap()
+                    .ok_or(JsonStoreError::TimeZoneError)?
                     .with_timezone(&Utc),
-                // TODO: Remove unwrap
                 end_time: Local
                     .from_local_datetime(&end_time)
                     .single()
-                    .unwrap()
+                    .ok_or(JsonStoreError::TimeZoneError)?
                     .with_timezone(&Utc),
                 description: e.description.clone(),
-            }
+            })
         })
-        .collect();
+        .collect::<Result<Vec<_>, _>>()?;
 
     let store = JsonStore {
         version: 2,

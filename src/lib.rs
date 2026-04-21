@@ -8,10 +8,14 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum JsonStoreError {
-    #[error("io error: {0}")]
+    #[error(transparent)]
+    ChronoParseError(#[from] chrono::ParseError),
+    #[error("Error parsing timezone")]
+    TimeZoneError,
+    #[error(transparent)]
     IOError(#[from] io::Error),
-    #[error("something went wrong when dealing with json: {0}")]
-    JsonError(#[from] serde_json::Error),
+    #[error(transparent)]
+    SerdeJsonError(#[from] serde_json::Error),
     #[error("invalid store version")]
     InvalidVersion,
 }
