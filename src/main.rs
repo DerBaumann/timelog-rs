@@ -57,7 +57,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         entry_repository: EntryRepository {
             file_path: env::var_os("TIMELOG_STOREPATH")
                 .map(PathBuf::from)
-                .or_else(|| dirs::config_local_dir().map(|p| p.join("store.json")))
+                .or_else(|| dirs::config_local_dir().map(|p| p.join("timelog").join("store.json")))
                 .ok_or("TIMELOG_STOREPATH and user config dirs are both not defined!")?,
         },
     };
