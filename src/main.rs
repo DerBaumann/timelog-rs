@@ -3,6 +3,8 @@ use clap::{Parser, Subcommand};
 use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::EntryRepository};
 
+// TODO: Change the name to not conflict with existing crates
+// TODO: Maybe more features to make this more useful
 // TODO: Add documentation comments to project: https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments
 
 #[derive(Parser)]
