@@ -3,6 +3,8 @@ use clap::{Parser, Subcommand};
 use std::{env, error::Error, path::PathBuf};
 use timelog::entry::{controller::EntryController, repository::EntryRepository};
 
+// TODO: Add documentation comments to project: https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments
+
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Cli {
